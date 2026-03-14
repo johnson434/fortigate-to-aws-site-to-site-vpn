@@ -23,5 +23,3 @@ module "aws" {
     ManagedBy = "terraform"
   }
 }
-
-

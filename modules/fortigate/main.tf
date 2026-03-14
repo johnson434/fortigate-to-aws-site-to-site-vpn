@@ -4,21 +4,22 @@ provider "fortios" {
   insecure = true
 }
 
-resource "fortios_vpnipsec_phase1" "tunnel1" {
+resource "fortios_vpnipsec_phase1interface" "tunnel1" {
   name       = "aws-vpn-tunnel1"
   type       = "static"
   interface  = "port1"
   remote_gw  = var.vpn_tunnel1_address
   psksecret  = var.vpn_tunnel1_preshared_key
-  proposal   = "aes256-sha256 aes256-sha1 aes128-sha256 aes128-sha1"
+  proposal = "des-sha1"
+  # proposal   = "aes256-sha256 aes256-sha1 aes128-sha256 aes128-sha1"
   authmethod = "psk"
   comments   = "AWS Site-to-Site VPN Tunnel 1"
 }
 
-resource "fortios_vpnipsec_phase2" "tunnel1" {
-  name       = "aws-vpn-tunnel1-p2"
-  phase1name = fortios_vpnipsec_phase1.tunnel1.name
-  proposal   = "aes256-sha256 aes256-sha1 aes128-sha256 aes128-sha1"
+resource "fortios_vpnipsec_phase2interface" "tunnel1" {
+  name       = "aws-vpn-tunnel1"
+  phase1name = fortios_vpnipsec_phase1interface.tunnel1.name
+  proposal = "des-sha1"
   src_subnet = var.fortigate_cidr
   dst_subnet = var.vpc_cidr
   comments   = "AWS Site-to-Site VPN Tunnel 1 Phase 2"
@@ -33,7 +34,7 @@ resource "fortios_firewall_policy" "vpn_to_internal" {
   comments = "Allow traffic from VPN to internal network"
 
   srcintf {
-    name = fortios_vpnipsec_phase2.tunnel1.name
+    name = fortios_vpnipsec_phase1interface.tunnel1.name
   }
 
   dstintf {
@@ -66,7 +67,7 @@ resource "fortios_firewall_policy" "internal_to_vpn" {
   }
 
   dstintf {
-    name = fortios_vpnipsec_phase2.tunnel1.name
+    name = fortios_vpnipsec_phase2interface.tunnel1.name
   }
 
   srcaddr {
