@@ -33,7 +33,14 @@ variable "fortigate_host" {
 }
 
 variable "api_token" {
-    description = "API token for FortiGate access."
-    type        = string
-    sensitive   = true
+  description = "API token for FortiGate access."
+  type        = string
+  sensitive   = true
 }
+
+variable "tunnel1_preshared_key" {
+  description = "AWS VPN 첫 번째 터널의 preshared key"
+  type        = string
+  sensitive   = true
+}
+

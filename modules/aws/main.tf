@@ -42,10 +42,15 @@ resource "aws_customer_gateway" "fortigate" {
 }
 
 resource "aws_vpn_connection" "main" {
-  vpn_gateway_id      = aws_vpn_gateway.main.id
-  customer_gateway_id = aws_customer_gateway.fortigate.id
-  type                = "ipsec.1"
-  static_routes_only  = true
+  vpn_gateway_id                       = aws_vpn_gateway.main.id
+  customer_gateway_id                  = aws_customer_gateway.fortigate.id
+  type                                 = "ipsec.1"
+  static_routes_only                   = true
+  tunnel1_preshared_key                = var.tunnel1_preshared_key
+  local_ipv4_network_cidr              = local.private_subnet_cidrs[0]
+  tunnel1_phase1_dh_group_numbers      = [var.dhgrp]
+  tunnel1_phase1_encryption_algorithms = [var.p1_enc_algo]
+  tunnel1_phase1_integrity_algorithms  = [var.p1_inter_algo]
 
   tags = merge({
     Name = "${var.vpc_name}-vpn"
@@ -71,4 +76,3 @@ resource "aws_route" "fortigate" {
   destination_cidr_block = var.fortigate_cidr
   gateway_id             = aws_vpn_gateway.main.id
 }
-

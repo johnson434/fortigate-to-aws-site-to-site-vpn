@@ -45,12 +45,3 @@ output "phase2_interface_name" {
   value       = fortios_vpnipsec_phase2interface.tunnel1.name
 }
 
-output "fortigate_cidr" {
-  description = "CIDR block of the FortiGate network."
-  value       = var.fortigate_cidr
-}
-
-output "vpc_cidr" {
-  description = "CIDR block of the AWS VPC."
-  value       = var.vpc_cidr
-}
