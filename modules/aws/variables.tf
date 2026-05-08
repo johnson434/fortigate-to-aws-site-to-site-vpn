@@ -1,57 +1,65 @@
-variable "vpc_cidr" {
+variable "aws_vpc_cidr" {
   description = "CIDR block for the VPC."
   type        = string
   default     = "10.0.0.0/16"
 }
 
-variable "vpc_name" {
+variable "aws_vpc_name" {
   description = "Name tag for the VPC."
   type        = string
   default     = "fortigate-vpc"
 }
 
-variable "p1_enc_algo" {
+variable "ipsec_phase1_enc_algo" {
   description = "Tunnel1에서 사용하는 Phase1 암호화 알고리즘"
   type        = string
 }
 
-variable "p1_inter_algo" {
+variable "ipsec_phase1_inter_algo" {
   description = "Tunnel1에서 사용하는 Phase1 무결성 알고리즘"
   type        = string
 }
 
-variable "private_subnet_cidrs" {
+variable "ipsec_phase2_enc_algo" {
+  description = "VPN Phase 2 encryption algorithm"
+  type        = string
+}
+
+variable "ipsec_phase2_inter_algo" {
+  description = "VPN Phase 2 integrity algorithm"
+  type        = string
+}
+
+variable "aws_private_subnet_cidrs" {
   description = "CIDR blocks for private subnets to create inside the VPC."
   type        = list(string)
   default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
-variable "tags" {
+variable "aws_resource_tags" {
   description = "Tags to apply to created resources."
   type        = map(string)
   default     = {}
 }
 
-variable "customer_gateway_ip" {
+variable "fortios_cgw_public_ip" {
   description = "Public IP address of the FortiGate device for Customer Gateway."
   type        = string
 }
 
-variable "tunnel1_preshared_key" {
+variable "ipsec_preshared_key" {
   sensitive   = true
-  description = "첫 번째 터널의 Preshared key"
+  description = "Pre-shared key for both VPN tunnels"
   type        = string
 }
 
-variable "dhgrp" {
+variable "ipsec_dh_group" {
   description = "Tunnel에 사용될 DH Group"
   type        = string
 }
 
-variable "fortigate_cidr" {
-  description = "CIDR block of the FortiGate network to route traffic to."
+variable "on_prem_network_cidr" {
+  description = "CIDR block of the on-premises network to route traffic to."
   type        = string
   default     = "192.168.0.0/16"
 }
-
-

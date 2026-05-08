@@ -1,22 +1,22 @@
-output "vpn_tunnel1_address" {
+output "aws_vpn_tunnel1_address" {
   description = "IP address of the VPN tunnel 1 endpoint on FortiGate side."
-  value       = var.vpn_tunnel1_address
+  value       = var.aws_vpn_tunnel1_address
 }
 
-output "vpn_tunnel2_address" {
+output "aws_vpn_tunnel2_address" {
   description = "IP address of the VPN tunnel 2 endpoint on FortiGate side."
-  value       = var.vpn_tunnel2_address
+  value       = var.aws_vpn_tunnel2_address
 }
 
-output "vpn_tunnel1_preshared_key" {
+output "aws_vpn_tunnel1_psk" {
   description = "Pre-shared key for VPN tunnel 1."
-  value       = var.vpn_tunnel1_preshared_key
+  value       = var.aws_vpn_tunnel1_psk
   sensitive   = true
 }
 
-output "vpn_tunnel2_preshared_key" {
+output "aws_vpn_tunnel2_psk" {
   description = "Pre-shared key for VPN tunnel 2."
-  value       = var.vpn_tunnel2_preshared_key
+  value       = var.aws_vpn_tunnel2_psk
   sensitive   = true
 }
 
@@ -44,4 +44,3 @@ output "phase2_interface_name" {
   description = "Name of the IPsec Phase 2 interface."
   value       = fortios_vpnipsec_phase2interface.tunnel1.name
 }
-
