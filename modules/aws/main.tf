@@ -42,14 +42,14 @@ resource "aws_customer_gateway" "fortigate" {
 }
 
 resource "aws_vpn_connection" "main" {
-  vpn_gateway_id                       = aws_vpn_gateway.main.id
-  customer_gateway_id                  = aws_customer_gateway.fortigate.id
-  type                                 = "ipsec.1"
-  static_routes_only                   = true
-  tunnel1_preshared_key                = var.ipsec_preshared_key
-  tunnel2_preshared_key                = var.ipsec_preshared_key
-  local_ipv4_network_cidr              = local.private_subnet_cidrs[0]
-  
+  vpn_gateway_id          = aws_vpn_gateway.main.id
+  customer_gateway_id     = aws_customer_gateway.fortigate.id
+  type                    = "ipsec.1"
+  static_routes_only      = true
+  tunnel1_preshared_key   = var.ipsec_preshared_key
+  tunnel2_preshared_key   = var.ipsec_preshared_key
+  local_ipv4_network_cidr = local.private_subnet_cidrs[0]
+
   # Tunnel 1 Algorithms
   tunnel1_phase1_dh_group_numbers      = [var.ipsec_dh_group]
   tunnel1_phase1_encryption_algorithms = [var.ipsec_phase1_enc_algo]
@@ -87,4 +87,31 @@ resource "aws_route" "fortigate" {
   route_table_id         = data.aws_route_table.main.id
   destination_cidr_block = var.on_prem_network_cidr
   gateway_id             = aws_vpn_gateway.main.id
+}
+
+
+resource "aws_instance" "test_pc" {
+  ami             = data.aws_ami.amzn-linux-2023-ami.id
+  instance_type   = "t2.micro"
+  security_groups = [aws_security_group.vpn_test.id]
+  subnet_id       = aws_subnet.private[0].id
+  private_ip      = "10.0.1.10"
+}
+
+
+resource "aws_security_group" "vpn_test" {
+  name        = "example"
+  description = "example"
+  vpc_id      = aws_vpc.main.id
+  tags = {
+    Name = "example"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "example" {
+  security_group_id = aws_security_group.vpn_test.id
+  cidr_ipv4         = "192.168.0.0/16"
+  ip_protocol       = "icmp"
+  to_port           = -1
+  from_port         = -1
 }

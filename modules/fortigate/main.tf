@@ -19,8 +19,8 @@ resource "fortios_vpnipsec_phase2interface" "tunnel1" {
   name       = local.tunnel1_name
   phase1name = fortios_vpnipsec_phase1interface.tunnel1.name
   proposal   = "${var.ipsec_phase2_enc_algo}-${var.ipsec_phase2_inter_algo}"
-  src_subnet = var.vpn_local_subnet_cidr
-  dst_subnet = var.vpn_remote_subnet_cidr
+  src_subnet = "0.0.0.0/0"
+  dst_subnet = "0.0.0.0/0"
   comments   = "AWS Site-to-Site VPN Tunnel 1 Phase 2"
 }
 
@@ -40,8 +40,8 @@ resource "fortios_vpnipsec_phase2interface" "tunnel2" {
   name       = local.tunnel2_name
   phase1name = fortios_vpnipsec_phase1interface.tunnel2.name
   proposal   = "${var.ipsec_phase2_enc_algo}-${var.ipsec_phase2_inter_algo}"
-  src_subnet = var.vpn_local_subnet_cidr
-  dst_subnet = var.vpn_remote_subnet_cidr
+  src_subnet = "0.0.0.0/0"
+  dst_subnet = "0.0.0.0/0"
   comments   = "AWS Site-to-Site VPN Tunnel 2 Phase 2"
 }
 

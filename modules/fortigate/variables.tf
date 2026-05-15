@@ -60,11 +60,9 @@ variable "ipsec_phase2_inter_algo" {
 variable "fortios_external_interface" {
   description = "External interface for VPN"
   type        = string
-  default     = "port1"
 }
 
 variable "fortios_internal_interface" {
   description = "Internal interface for firewall policies"
   type        = string
-  default     = "port3"
 }

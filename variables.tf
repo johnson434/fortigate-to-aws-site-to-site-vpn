@@ -24,7 +24,6 @@ variable "fortios_cgw_public_ip" {
 variable "on_prem_network_cidr" {
   description = "CIDR block of the on-premises network to route traffic to."
   type        = string
-  default     = "192.168.0.0/16"
 }
 
 variable "fortios_api_hostname" {
