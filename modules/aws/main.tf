@@ -95,13 +95,13 @@ resource "aws_instance" "test_pc" {
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.vpn_test.id]
   subnet_id       = aws_subnet.private[0].id
-  private_ip      = "10.0.1.10"
+  private_ip      = var.ec2_instance_ip
 }
 
 
 resource "aws_security_group" "vpn_test" {
-  name        = "example"
-  description = "example"
+  name        = "allow_ingress_icmp_from_vpn"
+  description = "Allow ingress icmp protocol packet from vpn tunnel"
   vpc_id      = aws_vpc.main.id
   tags = {
     Name = "example"
@@ -110,7 +110,7 @@ resource "aws_security_group" "vpn_test" {
 
 resource "aws_vpc_security_group_ingress_rule" "example" {
   security_group_id = aws_security_group.vpn_test.id
-  cidr_ipv4         = "192.168.0.0/16"
+  cidr_ipv4         = var.aws_vpc_cidr
   ip_protocol       = "icmp"
   to_port           = -1
   from_port         = -1

@@ -1,11 +1,9 @@
 locals {
-  fortios_external_interface = "wan1"
-  fortios_internal_interface = "internal"
-  ipsec_phase1_enc_algo      = "AES128"
-  ipsec_phase1_inter_algo    = "SHA1"
-  ipsec_phase2_enc_algo      = "AES128"
-  ipsec_phase2_inter_algo    = "SHA1"
-  ipsec_dh_group             = 14
+  ipsec_phase1_enc_algo   = "AES128"
+  ipsec_phase1_inter_algo = "SHA1"
+  ipsec_phase2_enc_algo   = "AES128"
+  ipsec_phase2_inter_algo = "SHA1"
+  ipsec_dh_group          = 14
 }
 
 provider "fortios" {
@@ -17,8 +15,8 @@ provider "fortios" {
 module "fortigate" {
   source = "./modules/fortigate"
 
-  fortios_external_interface = local.fortios_external_interface
-  fortios_internal_interface = local.fortios_internal_interface
+  fortios_external_interface = var.fortios_external_interface
+  fortios_internal_interface = var.fortios_internal_interface
   vpn_local_subnet_cidr      = var.on_prem_network_cidr
   vpn_remote_subnet_cidr     = var.aws_vpc_cidr
   ipsec_dh_group             = local.ipsec_dh_group
@@ -47,7 +45,7 @@ module "aws" {
   ipsec_phase2_enc_algo   = local.ipsec_phase2_enc_algo
   ipsec_phase2_inter_algo = local.ipsec_phase2_inter_algo
   ipsec_dh_group          = local.ipsec_dh_group
-
+  ec2_instance_ip         = var.aws_ec2_instance_ip
 
   aws_resource_tags = {
     ManagedBy = "terraform"

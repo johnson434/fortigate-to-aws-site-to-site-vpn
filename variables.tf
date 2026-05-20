@@ -16,6 +16,21 @@ variable "aws_vpc_name" {
   default     = "fortigate-vpc"
 }
 
+variable "aws_ec2_instance_ip" {
+  description = "VPN 터널 통신 테스트를 위해 만들 EC2 인스턴스가 가질 IP 주소"
+  type        = string
+}
+
+variable "fortios_external_interface" {
+  description = "FortiGate가 IPsec을 맺을 인터페이스명"
+  type        = string
+}
+
+variable "fortios_internal_interface" {
+  description = "On-premise의 VPN을 통해 접근할 내부 대역으로 향하는 인터페이스명"
+  type        = string
+}
+
 variable "fortios_cgw_public_ip" {
   description = "Public IP address of the FortiGate device for Customer Gateway."
   type        = string
